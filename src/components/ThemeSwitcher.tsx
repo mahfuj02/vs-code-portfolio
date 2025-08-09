@@ -1,3 +1,4 @@
+"use client";
 // ThemeSwitcher.tsx
 import React from 'react';
 import { useTheme } from './ThemeContext';

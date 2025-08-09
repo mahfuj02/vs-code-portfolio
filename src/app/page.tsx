@@ -1,3 +1,4 @@
+"use client";
 
 
 import VSCodeLayout from "../components/VSCodeLayout";
