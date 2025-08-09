@@ -46,25 +46,50 @@ const blogs = [
 ];
 
 const BlogSection: React.FC = () => {
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [selectedBlogId, setSelectedBlogId] = useState<number | null>(null);
+  const [fullView, setFullView] = useState(false);
+
+  if (selectedBlogId !== null) {
+    const blog = blogs.find(b => b.id === selectedBlogId);
+    if (!blog) return null;
+    // Full blog section
+    if (fullView) {
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+          <div className="bg-blue-950 rounded-lg p-8 shadow-2xl max-w-2xl w-full relative cursor-pointer" onClick={() => setFullView(false)}>
+            <button className="absolute top-4 right-4 text-blue-300 underline text-sm" onClick={e => {e.stopPropagation(); setSelectedBlogId(null); setFullView(false);}}>Back</button>
+            <img src={blog.image} alt={blog.title} className="w-full h-64 object-cover rounded mb-6" />
+            <h2 className="text-3xl font-bold mb-4 text-blue-400">{blog.title}</h2>
+            <div className="text-blue-200 whitespace-pre-line mb-4">{blog.content}</div>
+            <div className="text-blue-100">Click anywhere to close full view.</div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="p-8">
+        <button className="text-blue-300 underline text-sm mb-4" onClick={() => setSelectedBlogId(null)}>Back</button>
+        <div className="bg-blue-950 rounded-lg p-8 shadow-lg cursor-pointer hover:scale-105 transition" onClick={() => setFullView(true)}>
+          <img src={blog.image} alt={blog.title} className="w-full h-64 object-cover rounded mb-6" />
+          <h2 className="text-2xl font-bold mb-4 text-blue-400">{blog.title}</h2>
+          <div className="text-blue-200 whitespace-pre-line mb-4">{blog.content}</div>
+          <div className="text-blue-100">Click to expand to full view.</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Blog list view
   return (
     <div className="p-8">
       <h2 className="text-2xl font-bold mb-6">Blog</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {blogs.map(blog => (
-          <div key={blog.id} className="bg-blue-950 rounded-lg p-6 shadow-lg hover:scale-105 transition cursor-pointer">
+          <div key={blog.id} className="bg-blue-950 rounded-lg p-6 shadow-lg hover:scale-105 transition cursor-pointer" onClick={() => setSelectedBlogId(blog.id)}>
             <img src={blog.image} alt={blog.title} className="w-full h-40 object-cover rounded mb-4" />
             <h3 className="text-lg font-semibold mb-2 text-blue-400">{blog.title}</h3>
             <p className="text-blue-100 mb-2">{blog.preview}</p>
-            {expandedId === blog.id ? (
-              <div className="text-blue-200 whitespace-pre-line mb-2">{blog.content}</div>
-            ) : null}
-            <button
-              className="text-blue-300 underline text-sm mt-2"
-              onClick={() => setExpandedId(expandedId === blog.id ? null : blog.id)}
-            >
-              {expandedId === blog.id ? "Show Less" : "Read More"}
-            </button>
+            <div className="text-blue-300 underline text-sm mt-2">Read More</div>
           </div>
         ))}
       </div>

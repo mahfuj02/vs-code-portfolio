@@ -5,29 +5,34 @@ import { themeColors } from "./ThemeContext";
 import Theme from "./Theme";
 import BlogSection from "./BlogSection";
 import GithubReadme from "./GithubReadme";
+import SectionTabs from "./SectionTabs";
 
 interface VSCodeLayoutProps {
   children: ReactNode;
   sidebar?: ReactNode;
   showThemePage?: boolean;
   setShowThemePage?: (show: boolean) => void;
+  openTabs?: string[];
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
 }
 
 
 
 
-const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThemePage: showThemePageProp, setShowThemePage: setShowThemePageProp }) => {
+const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThemePage: showThemePageProp, setShowThemePage: setShowThemePageProp, openTabs = ["about"], activeTab = "about", setActiveTab }) => {
   // Theme selector state is now controlled by parent
   const [showSidebar, setShowSidebar] = useState(true);
   // activeSection: 'files', 'github', 'blog', 'settings'
   const [activeSection, setActiveSection] = useState<string>("files");
   // Track which file is active (about, contact, etc.)
-  const [activeFile, setActiveFile] = useState<string>("about");
+  // Use activeTab from props
 
   // Listen for sidebar file click from parent (FileExplorer)
   const handleSidebarFileClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(false);
     setActiveSection("files");
+    if (setActiveTab) setActiveTab("about");
   };
   const { theme, setTheme } = useTheme();
   const colors = themeColors[theme] || themeColors.light;
@@ -67,6 +72,47 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThem
         <div className="text-xs" style={{ color: colors.sidebarText }}>mahfuj-ahmed-portfolio - Visual Studio Code</div>
       </div>
       {/* Main Content */}
+      <div className="flex flex-row w-full">
+        {/* Sidebar */}
+        <div style={{ width: '4rem' }}></div>
+        {/* Tab Bar - now always rendered for 'files' section */}
+        {activeSection === "files" && (
+          <div className="flex flex-1">
+            {openTabs.map(tabId => {
+              const tabMeta: Record<string, { label: string; icon: string }> = {
+                about: { label: "About.tsx", icon: "⚛️" },
+                experience: { label: "Experience.ts", icon: "💼" },
+                projects: { label: "Projects.js", icon: "🚀" },
+                skills: { label: "Skills.json", icon: "⚡" },
+                contact: { label: "Contact.tsx", icon: "📧" },
+              };
+              const meta = tabMeta[tabId];
+              const isActive = activeTab === tabId;
+              const activeStyle = isActive
+                ? {
+                    background: `${colors.tabActive}${theme === 'light' ? '' : 'CC'}`,
+                    color: colors.text,
+                    opacity: 0.95,
+                    fontWeight: 'bold',
+                    borderBottom: `2px solid ${colors.button}`,
+                  }
+                : {
+                    background: colors.tabInactive,
+                    color: colors.text,
+                    opacity: 0.8,
+                  };
+              return (
+                <div
+                  key={tabId}
+                  onClick={() => setActiveTab && setActiveTab(tabId)}
+                >
+                  
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
       <div className="flex flex-1 overflow-hidden">
         {/* Activity Bar */}
         <nav className="w-14 border-r flex flex-col items-center py-4 gap-4 relative" style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
@@ -79,21 +125,19 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThem
           <button title="Blog" className="text-lg focus:outline-none" onClick={handleBlogClick}>📝</button>
           <button title="Settings" className="absolute bottom-4 left-1/2 -translate-x-1/2 text-lg focus:outline-none" onClick={handleSettingsClick}>⚙️</button>
         </nav>
-        {/* Sidebar (File Explorer) */}
-        {showSidebar && (
-          <aside className="w-64 border-r flex flex-col py-4 gap-6" style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
-            {React.cloneElement(sidebar as React.ReactElement, {
-              onFileClick: (fileId: string) => {
-                setActiveSection("files");
-                setActiveFile(fileId);
-                if (setShowThemePageProp) setShowThemePageProp(false);
-              },
-              activeFile,
-            })}
-          </aside>
-        )}
+        {/* Sidebar (File Explorer) - always visible */}
+        <aside className="w-64 border-r flex flex-col py-4 gap-6" style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
+          {React.cloneElement(sidebar as React.ReactElement, {
+            onFileClick: (fileId: string) => {
+              setActiveSection("files");
+              if (setActiveTab) setActiveTab(fileId);
+              if (setShowThemePageProp) setShowThemePageProp(false);
+            },
+            activeFile: activeTab,
+          })}
+        </aside>
         {/* Editor Area */}
-        <main className="flex-1 p-6 overflow-y-auto" style={{ background: colors.background, color: colors.text }}>
+        <main className="flex-1 px-4 overflow-y-auto" style={{ background: colors.background, color: colors.text }}>
           {showThemePageProp ? (
             <Theme />
           ) : activeSection === "github" ? (
@@ -101,17 +145,8 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThem
           ) : activeSection === "blog" ? (
             <BlogSection />
           ) : activeSection === "files" ? (
-            (() => {
-              const arr = React.Children.toArray(children);
-              switch (activeFile) {
-                case "about": return arr[0];
-                case "experience": return arr[1];
-                case "projects": return arr[2];
-                case "skills": return arr[3];
-                case "contact": return arr[4];
-                default: return arr[0];
-              }
-            })()
+            // Render only the active tab's content
+            children
           ) : null}
         </main>
       </div>

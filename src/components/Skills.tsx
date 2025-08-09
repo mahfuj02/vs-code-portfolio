@@ -1,73 +1,67 @@
 import React from "react";
+import { useTheme } from "./ThemeContext";
+import { themeColors } from "./ThemeContext";
 
-const Skills: React.FC = () => (
-  <section>
-    <h2 className="text-xl font-bold mb-2">Skills & Achievements</h2>
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-      <div className="bg-neutral-800 rounded p-4 border-l-4 border-teal-400">
-        <div className="font-semibold mb-2">Programming Languages</div>
-        <div className="flex gap-2 flex-wrap">
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">C++</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">JavaScript</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">TypeScript</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Python</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">PHP</span>
+const Skills: React.FC = () => {
+  const { theme } = useTheme();
+  const colors = themeColors[theme] || themeColors.light;
+  return (
+    <section>
+      <h2 className="text-xl font-bold mb-2" style={{ color: colors.text }}>Skills & Achievements</h2>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+        <div className="rounded p-4" style={{ background: colors.card, color: colors.cardText, borderLeft: `4px solid ${colors.button}` }}>
+          <div className="font-semibold mb-2" style={{ color: colors.text }}>Programming Languages</div>
+          <div className="flex gap-2 flex-wrap">
+            {['C++','JavaScript','TypeScript','Python','PHP'].map(skill => (
+              <span key={skill} className="px-2 py-1 rounded text-xs" style={{ background: colors.button, color: colors.buttonText }}>{skill}</span>
+            ))}
+          </div>
+        </div>
+        <div className="rounded p-4" style={{ background: colors.card, color: colors.cardText, borderLeft: `4px solid ${colors.button}` }}>
+          <div className="font-semibold mb-2" style={{ color: colors.text }}>Frameworks & Libraries</div>
+          <div className="flex gap-2 flex-wrap">
+            {['React JS','Next JS','Django','Django REST'].map(skill => (
+              <span key={skill} className="px-2 py-1 rounded text-xs" style={{ background: colors.button, color: colors.buttonText }}>{skill}</span>
+            ))}
+          </div>
+        </div>
+        <div className="rounded p-4" style={{ background: colors.card, color: colors.cardText, borderLeft: `4px solid ${colors.button}` }}>
+          <div className="font-semibold mb-2" style={{ color: colors.text }}>Databases</div>
+          <div className="flex gap-2 flex-wrap">
+            {['MySQL','PostgreSQL','SQLite'].map(skill => (
+              <span key={skill} className="px-2 py-1 rounded text-xs" style={{ background: colors.button, color: colors.buttonText }}>{skill}</span>
+            ))}
+          </div>
+        </div>
+        <div className="rounded p-4" style={{ background: colors.card, color: colors.cardText, borderLeft: `4px solid ${colors.button}` }}>
+          <div className="font-semibold mb-2" style={{ color: colors.text }}>Web Technologies</div>
+          <div className="flex gap-2 flex-wrap">
+            {['HTML5','CSS3','Tailwind CSS','Chakra UI','Material UI','Redux','Zustand','React Query'].map(skill => (
+              <span key={skill} className="px-2 py-1 rounded text-xs" style={{ background: colors.button, color: colors.buttonText }}>{skill}</span>
+            ))}
+          </div>
+        </div>
+        <div className="rounded p-4" style={{ background: colors.card, color: colors.cardText, borderLeft: `4px solid ${colors.button}` }}>
+          <div className="font-semibold mb-2" style={{ color: colors.text }}>Tools & Methodologies</div>
+          <div className="flex gap-2 flex-wrap">
+            {['Git','Jira','Bitbucket','Docker','CI/CD','Figma','Trello'].map(skill => (
+              <span key={skill} className="px-2 py-1 rounded text-xs" style={{ background: colors.button, color: colors.buttonText }}>{skill}</span>
+            ))}
+          </div>
+        </div>
+        <div className="rounded p-4" style={{ background: colors.card, color: colors.cardText, borderLeft: `4px solid ${colors.button}` }}>
+          <div className="font-semibold mb-2" style={{ color: colors.text }}>Achievements</div>
+          <div className="text-sm" style={{ color: colors.cardText }}>
+            <div>🏆 1000+ programming challenges solved</div>
+            <div>⭐ Codeforces Rating: 1450 (mahfuj02)</div>
+            <div>🥇 Group Champion Sprint-Innovation 2025</div>
+            <div>🏆 Champion SPI Intra Programming Contest</div>
+            <div>🥈 Runner-Up LU Intra Programming Contest</div>
+          </div>
         </div>
       </div>
-      <div className="bg-neutral-800 rounded p-4 border-l-4 border-blue-600">
-        <div className="font-semibold mb-2">Frameworks & Libraries</div>
-        <div className="flex gap-2 flex-wrap">
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">React JS</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Next JS</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Django</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Django REST</span>
-        </div>
-      </div>
-      <div className="bg-neutral-800 rounded p-4 border-l-4 border-blue-400">
-        <div className="font-semibold mb-2">Databases</div>
-        <div className="flex gap-2 flex-wrap">
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">MySQL</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">PostgreSQL</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">SQLite</span>
-        </div>
-      </div>
-      <div className="bg-neutral-800 rounded p-4 border-l-4 border-purple-400">
-        <div className="font-semibold mb-2">Web Technologies</div>
-        <div className="flex gap-2 flex-wrap">
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">HTML5</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">CSS3</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Tailwind CSS</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Chakra UI</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Material UI</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Redux</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Zustand</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">React Query</span>
-        </div>
-      </div>
-      <div className="bg-neutral-800 rounded p-4 border-l-4 border-pink-400">
-        <div className="font-semibold mb-2">Tools & Methodologies</div>
-        <div className="flex gap-2 flex-wrap">
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Git</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Jira</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Bitbucket</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Docker</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">CI/CD</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Figma</span>
-          <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">Trello</span>
-        </div>
-      </div>
-      <div className="bg-neutral-800 rounded p-4 border-l-4 border-yellow-400">
-        <div className="font-semibold mb-2">Achievements</div>
-        <div className="text-neutral-200 text-sm">
-          <div>🏆 1000+ programming challenges solved</div>
-          <div>⭐ Codeforces Rating: 1450 (mahfuj02)</div>
-          <div>🥇 Group Champion Sprint-Innovation 2025</div>
-          <div>🏆 Champion SPI Intra Programming Contest</div>
-          <div>🥈 Runner-Up LU Intra Programming Contest</div>
-        </div>
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Skills;

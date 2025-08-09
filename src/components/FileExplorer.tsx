@@ -50,22 +50,19 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
       {/* File list (no folder header) */}
       <div className="file-list flex flex-col gap-1 mt-1">
         {files.map(file => {
-          let style = {};
-          if (theme === "ayu") {
-            style = activeTab === file.id
-              ? { background: colors.tabActive, color: colors.sidebarText }
-              : { background: colors.sidebar, color: colors.sidebarText };
-          }
-          if (theme === "dracula") {
-            style = activeTab === file.id
-              ? { background: colors.tabActive, color: colors.sidebarText }
-              : { background: colors.sidebar, color: colors.sidebarText };
-          }
-          if (theme === "nightowl") {
-            style = activeTab === file.id
-              ? { background: colors.tabActive, color: colors.sidebarText }
-              : { background: colors.sidebar, color: colors.sidebarText };
-          }
+          const isActive = activeTab === file.id;
+          const style = isActive
+            ? {
+                background: colors.tabActive,
+                color: colors.sidebarText,
+                opacity: 0.95,
+                fontWeight: 'bold',
+              }
+            : {
+                background: colors.sidebar,
+                color: colors.sidebarText,
+                opacity: 0.8,
+              };
           return (
             <div
               key={file.id}
