@@ -4,9 +4,10 @@ import ThemeSwitcher from "./ThemeSwitcher";
 
 interface VSCodeLayoutProps {
   children: ReactNode;
+  sidebar?: ReactNode;
 }
 
-const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children }) => {
+const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar }) => {
   return (
     <div className="min-h-screen flex flex-col bg-neutral-900 text-neutral-100 font-mono">
       {/* Title Bar */}
@@ -22,11 +23,8 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className="w-16 bg-neutral-800 border-r border-neutral-700 flex flex-col items-center py-4 gap-6">
-          <span title="Explorer" className="text-lg">📁</span>
-          <span title="Source Control" className="text-lg">🌿</span>
-          <span title="Debug" className="text-lg">🐛</span>
-          <span title="Extensions" className="text-lg">⚡</span>
+        <aside className="w-64 bg-neutral-800 border-r border-neutral-700 flex flex-col py-4 gap-6">
+          {sidebar}
         </aside>
         {/* Editor Area */}
         <main className="flex-1 p-6 overflow-y-auto">{children}</main>
