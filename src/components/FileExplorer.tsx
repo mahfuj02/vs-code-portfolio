@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import { useTheme } from "./ThemeContext";
+import { themeColors } from "./ThemeContext";
 
 const files = [
   { id: "about", label: "About.tsx", icon: "⚛️" },
@@ -14,24 +16,30 @@ interface FileExplorerProps {
   setOpenTabs: (tabs: string[]) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  onFileClick?: () => void;
 }
 
-const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, activeTab, setActiveTab }) => {
+const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, activeTab, setActiveTab, onFileClick }) => {
+  // Get theme from context
+  const { theme } = useTheme();
+  const colors = themeColors[theme] || themeColors.light;
   const [folderOpen, setFolderOpen] = useState(true);
-
   const handleFolderClick = () => {
     setFolderOpen(open => !open);
   };
-
   const handleFileClick = (id: string) => {
     if (!openTabs.includes(id)) {
       setOpenTabs([...openTabs, id]);
     }
     setActiveTab(id);
+    if (typeof onFileClick === "function") onFileClick();
   };
 
   return (
-    <div className="file-explorer flex flex-col gap-1">
+    <div
+      className="file-explorer flex flex-col gap-1"
+      style={theme === "ayu" ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" } : {}}
+    >
       {/* Extra icons above explorer */}
       <div className="flex gap-2 mb-2 px-4">
         <span title="Settings" className="text-lg">⚙️</span>
@@ -39,17 +47,25 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
       </div>
       {/* File list (no folder header) */}
       <div className="file-list flex flex-col gap-1 mt-1">
-        {files.map(file => (
-          <div
-            key={file.id}
-            className={`file-item flex items-center gap-2 px-4 py-2 rounded cursor-pointer transition-colors text-sm font-mono
-              ${activeTab === file.id ? "bg-neutral-700 text-white" : "bg-neutral-800 text-neutral-400 hover:bg-neutral-700"}`}
-            onClick={() => handleFileClick(file.id)}
-          >
-            <span>{file.icon}</span>
-            <span>{file.label}</span>
-          </div>
-        ))}
+        {files.map(file => {
+          let style = {};
+          if (theme === "ayu") {
+            style = activeTab === file.id
+              ? { background: colors.tabActive, color: colors.sidebarText }
+              : { background: colors.sidebar, color: colors.sidebarText };
+          }
+          return (
+            <div
+              key={file.id}
+              className={`file-item flex items-center gap-2 px-4 py-2 rounded cursor-pointer transition-colors text-sm font-mono`}
+              style={style}
+              onClick={() => handleFileClick(file.id)}
+            >
+              <span>{file.icon}</span>
+              <span>{file.label}</span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
