@@ -16,7 +16,7 @@ interface FileExplorerProps {
   setOpenTabs: (tabs: string[]) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  onFileClick?: () => void;
+  onFileClick?: (fileId: string) => void;
 }
 
 const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, activeTab, setActiveTab, onFileClick }) => {
@@ -32,7 +32,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
       setOpenTabs([...openTabs, id]);
     }
     setActiveTab(id);
-    if (typeof onFileClick === "function") onFileClick();
+    if (typeof onFileClick === "function") onFileClick(id);
   };
 
   return (
@@ -46,11 +46,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
         ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" }
         : {}}
     >
-      {/* Extra icons above explorer */}
-      <div className="flex gap-2 mb-2 px-4">
-        <span title="Settings" className="text-lg">⚙️</span>
-        <span title="Notifications" className="text-lg">🔔</span>
-      </div>
+  {/* ...existing code... */}
       {/* File list (no folder header) */}
       <div className="file-list flex flex-col gap-1 mt-1">
         {files.map(file => {
