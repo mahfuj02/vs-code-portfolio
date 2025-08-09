@@ -42,6 +42,8 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
         ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" }
         : theme === "dracula"
         ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" }
+        : theme === "nightowl"
+        ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" }
         : {}}
     >
       {/* Extra icons above explorer */}
@@ -59,6 +61,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
               : { background: colors.sidebar, color: colors.sidebarText };
           }
           if (theme === "dracula") {
+            style = activeTab === file.id
+              ? { background: colors.tabActive, color: colors.sidebarText }
+              : { background: colors.sidebar, color: colors.sidebarText };
+          }
+          if (theme === "nightowl") {
             style = activeTab === file.id
               ? { background: colors.tabActive, color: colors.sidebarText }
               : { background: colors.sidebar, color: colors.sidebarText };

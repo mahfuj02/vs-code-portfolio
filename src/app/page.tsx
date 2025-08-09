@@ -56,12 +56,7 @@ export default function Home() {
 
   // Tab style helper for light theme
   const getTabClass = (tabId: string) => {
-    if (theme === "ayu") {
-      return activeTab === tabId
-        ? "border-b-2 font-bold"
-        : "hover:opacity-80";
-    }
-    if (theme === "dracula") {
+    if (theme === "ayu" || theme === "dracula" || theme === "nightowl") {
       return activeTab === tabId
         ? "border-b-2 font-bold"
         : "hover:opacity-80";
@@ -89,6 +84,8 @@ export default function Home() {
           ? { background: colors.background, borderBottom: `1px solid ${colors.border}` }
           : theme === "dracula"
           ? { background: colors.background, borderBottom: `1px solid ${colors.border}` }
+          : theme === "nightowl"
+          ? { background: colors.background, borderBottom: `1px solid ${colors.border}` }
           : {}}
       >
         {openTabs.map(tabId => {
@@ -100,6 +97,11 @@ export default function Home() {
               : { background: colors.background, color: colors.text };
           }
           if (theme === "dracula") {
+            style = activeTab === tabId
+              ? { background: colors.tabActive, color: colors.text, borderBottom: `2px solid ${colors.button}` }
+              : { background: colors.background, color: colors.text };
+          }
+          if (theme === "nightowl") {
             style = activeTab === tabId
               ? { background: colors.tabActive, color: colors.text, borderBottom: `2px solid ${colors.button}` }
               : { background: colors.background, color: colors.text };
