@@ -38,7 +38,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
   return (
     <div
       className="file-explorer flex flex-col gap-1"
-      style={theme === "ayu" ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" } : {}}
+      style={theme === "ayu"
+        ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" }
+        : theme === "dracula"
+        ? { background: colors.sidebar, color: colors.sidebarText, minHeight: "100%" }
+        : {}}
     >
       {/* Extra icons above explorer */}
       <div className="flex gap-2 mb-2 px-4">
@@ -50,6 +54,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ openTabs, setOpenTabs, acti
         {files.map(file => {
           let style = {};
           if (theme === "ayu") {
+            style = activeTab === file.id
+              ? { background: colors.tabActive, color: colors.sidebarText }
+              : { background: colors.sidebar, color: colors.sidebarText };
+          }
+          if (theme === "dracula") {
             style = activeTab === file.id
               ? { background: colors.tabActive, color: colors.sidebarText }
               : { background: colors.sidebar, color: colors.sidebarText };

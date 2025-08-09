@@ -61,6 +61,11 @@ export default function Home() {
         ? "border-b-2 font-bold"
         : "hover:opacity-80";
     }
+    if (theme === "dracula") {
+      return activeTab === tabId
+        ? "border-b-2 font-bold"
+        : "hover:opacity-80";
+    }
     if (theme === "light") {
       return activeTab === tabId
         ? "bg-gray-100 border-b-2 border-blue-600 text-neutral-900"
@@ -80,12 +85,21 @@ export default function Home() {
       {/* Tab Bar */}
       <div
         className="flex gap-1 border-b mb-6"
-        style={theme === "ayu" ? { background: colors.background, borderBottom: `1px solid ${colors.border}` } : {}}
+        style={theme === "ayu"
+          ? { background: colors.background, borderBottom: `1px solid ${colors.border}` }
+          : theme === "dracula"
+          ? { background: colors.background, borderBottom: `1px solid ${colors.border}` }
+          : {}}
       >
         {openTabs.map(tabId => {
           const meta = tabMeta.find(t => t.id === tabId);
           let style = {};
           if (theme === "ayu") {
+            style = activeTab === tabId
+              ? { background: colors.tabActive, color: colors.text, borderBottom: `2px solid ${colors.button}` }
+              : { background: colors.background, color: colors.text };
+          }
+          if (theme === "dracula") {
             style = activeTab === tabId
               ? { background: colors.tabActive, color: colors.text, borderBottom: `2px solid ${colors.button}` }
               : { background: colors.background, color: colors.text };
