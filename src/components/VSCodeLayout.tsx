@@ -5,7 +5,6 @@ import { themeColors } from "./ThemeContext";
 import Theme from "./Theme";
 import BlogSection from "./BlogSection";
 import GithubReadme from "./GithubReadme";
-import SectionTabs from "./SectionTabs";
 
 interface VSCodeLayoutProps {
   children: ReactNode;
@@ -127,14 +126,7 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThem
         </nav>
         {/* Sidebar (File Explorer) - always visible */}
         <aside className="w-64 border-r flex flex-col py-4 gap-6" style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
-          {React.cloneElement(sidebar as React.ReactElement, {
-            onFileClick: (fileId: string) => {
-              setActiveSection("files");
-              if (setActiveTab) setActiveTab(fileId);
-              if (setShowThemePageProp) setShowThemePageProp(false);
-            },
-            activeFile: activeTab,
-          })}
+          {sidebar}
         </aside>
         {/* Editor Area */}
         <main className="flex-1 px-4 overflow-y-auto" style={{ background: colors.background, color: colors.text }}>

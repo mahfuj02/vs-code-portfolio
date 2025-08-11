@@ -8,7 +8,7 @@ const GithubReadme: React.FC = () => (
       className="w-32 h-32 rounded-full border-4 border-blue-400 shadow-lg mb-4"
     />
     <div className="prose prose-invert max-w-2xl text-left">
-      <h1>Hi 👋, I'm Mahfuj Ahmed - Full Stack Developer</h1>
+  <h1>Hi 👋, I&apos;m Mahfuj Ahmed - Full Stack Developer</h1>
       <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=500&size=28&pause=1000&color=4EC9B0&center=true&vCenter=true&width=600&lines=Full+Stack+Developer;Mobile+App+Developer;Problem+Solving+Enthusiast;" alt="Typing SVG" className="mx-auto mb-4" />
       <h2>🚀 About Me</h2>
       <ul>
@@ -17,7 +17,7 @@ const GithubReadme: React.FC = () => (
         <li>🏆 <b>Contest Champion</b> with <b>1000+ programming challenges</b> solved across <b>Codeforces & LeetCode</b></li>
         <li>🥇 <b>Group Champion at Sprint-Innovation 2025</b></li>
         <li>🌱 Building scalable applications with <b>React.js</b>, <b>React Native</b>, <b>Django</b>, and <b>Next.js</b></li>
-        <li>💼 <b>Junior Software Engineer</b> experience with performance optimization (39% → 90% improvement)</li>
+  <li>💼 <b>Junior Software Engineer</b> experience with performance optimization (39% &rarr; 90% improvement)</li>
         <li>📍 <b>Winnipeg, MB, Canada</b> | Open to <b>remote opportunities</b></li>
       </ul>
       <h2>💡 What I Do</h2>
@@ -32,7 +32,7 @@ const GithubReadme: React.FC = () => (
         self.databases = ["MySQL", "PostgreSQL", "SQLite", "Supabase"]
         self.achievements = ["1000+ problems solved", "Contest Champion", "Performance optimization expert"]
     def say_hi(self):
-        print("Thanks for dropping by! Let's build something amazing together.")
+  print(&quot;Thanks for dropping by! Let&apos;s build something amazing together.&quot;)
 
 me = FullStackDeveloper()
 me.say_hi()`}
@@ -48,7 +48,7 @@ me.say_hi()`}
         <li>🏆 Champion at SPI Intra Programming Contest</li>
         <li>🥈 Runner-Up at LU Intra Programming Contest</li>
         <li>💻 1000+ problems solved across Codeforces & LeetCode</li>
-        <li>📈 Performance Optimization Expert: Improved WordPress theme performance from 39% to 90%</li>
+  <li>📈 Performance Optimization Expert: Improved WordPress theme performance from 39% to 90%</li>
         <li>🚀 Full Stack Experience: Built scalable web & mobile applications from frontend to database</li>
       </ul>
       <h2>📊 GitHub Stats</h2>
@@ -104,7 +104,7 @@ me.say_hi()`}
         <li>💼 Open to full-stack developer opportunities</li>
       </ul>
       <blockquote className="mt-8 text-center text-lg font-semibold text-blue-400">
-        "Turning complex problems into elegant solutions, one line of code at a time."
+  &quot;Turning complex problems into elegant solutions, one line of code at a time.&quot;
       </blockquote>
       <div className="flex justify-center mt-4">
         <img src="https://komarev.com/ghpvc/?username=mahfuj02&label=Profile%20views&color=4EC9B0&style=flat" alt="Profile Views" />
