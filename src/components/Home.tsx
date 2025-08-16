@@ -65,7 +65,7 @@ const Home = () => {
 
   return (
     <div 
-      className="relative w-full min-h-screen p-8"
+      className="relative w-full h-full flex p-2 lg:p-8"
       style={{ 
         background: colors.background,
         color: colors.text 
@@ -144,10 +144,10 @@ const Home = () => {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col lg:flex-row w-full max-w-7xl mx-auto gap-8">
+      <div className="relative z-10 flex flex-col lg:flex-row w-full max-w-7xl mx-auto gap-2 lg:gap-8">
         {/* Left: Code Editor */}
         <div 
-          className="lg:w-1/2 rounded-xl shadow-2xl p-6 border"
+          className="w-full lg:w-1/2 rounded-xl shadow-2xl p-2 lg:p-6 border"
           style={{ 
             background: colors.sidebar,
             borderColor: colors.border
@@ -156,33 +156,33 @@ const Home = () => {
           
           {/* Code Snippet */}
           <div 
-            className="rounded-lg p-4 overflow-x-auto"
+            className="rounded-lg p-2 lg:p-4 overflow-x-auto"
             style={{ background: colors.tabActive }}
           >
-            <pre className="text-sm font-mono whitespace-pre" style={{ color: colors.text }}>
+            <pre className="text-xs lg:text-sm font-mono whitespace-pre" style={{ color: colors.text }}>
               <code>{codeSnippet}</code>
             </pre>
           </div>
         </div>
 
         {/* Right: Hero Section */}
-        <div className="lg:w-1/2 flex flex-col justify-center items-start">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-4" style={{ color: colors.text }}>
+        <div className="w-full lg:w-1/2 flex flex-col justify-center items-start">
+          <h1 className="text-2xl sm:text-4xl lg:text-6xl font-bold mb-2 lg:mb-4" style={{ color: colors.text }}>
             Mahfuj Ahmed
           </h1>
-          <h2 className="text-xl lg:text-3xl font-semibold mb-6" style={{ color: colors.button }}>
+          <h2 className="text-base sm:text-xl lg:text-3xl font-semibold mb-3 lg:mb-6" style={{ color: colors.button }}>
             Full Stack Web Developer
           </h2>
-          <p className="text-lg mb-8 max-w-lg leading-relaxed" style={{ color: colors.sidebarText }}>
+          <p className="text-sm lg:text-lg mb-4 lg:mb-8 max-w-lg leading-relaxed" style={{ color: colors.sidebarText }}>
             I build elegant, responsive web applications with modern technologies. 
             Focused on clean code and intuitive user experiences.
           </p>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-2 lg:gap-4 w-full sm:w-auto">
             <a 
               href="/projects" 
-              className="px-8 py-4 rounded-lg shadow-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center group"
+              className="px-4 lg:px-8 py-2 lg:py-4 rounded-lg shadow-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center group text-center text-sm lg:text-base"
               style={{ 
                 background: colors.button,
                 color: colors.buttonText 
@@ -193,7 +193,7 @@ const Home = () => {
             </a>
             <a 
               href="/contact" 
-              className="px-8 py-4 border-2 rounded-lg font-semibold transition-all duration-300 hover:opacity-80"
+              className="px-4 lg:px-8 py-2 lg:py-4 border-2 rounded-lg font-semibold transition-all duration-300 hover:opacity-80 text-center text-sm lg:text-base"
               style={{ 
                 borderColor: colors.border,
                 color: colors.text,

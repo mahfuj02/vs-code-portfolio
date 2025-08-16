@@ -14,48 +14,42 @@ interface VSCodeLayoutProps {
   openTabs?: string[];
   activeTab?: string;
   setActiveTab?: (tab: string) => void;
+  isMobile?: boolean;
 }
 
 
 
 
-const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThemePage: showThemePageProp, setShowThemePage: setShowThemePageProp, openTabs = ["about"], activeTab = "about", setActiveTab }) => {
-  // Theme selector state is now controlled by parent
-  const [showSidebar, setShowSidebar] = useState(true);
+const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ 
+  children, 
+  sidebar, 
+  showThemePage: showThemePageProp, 
+  setShowThemePage: setShowThemePageProp, 
+  openTabs = ["about"], 
+  activeTab = "about", 
+  setActiveTab,
+  isMobile = false 
+}) => {
   // activeSection: 'files', 'github', 'blog', 'settings'
   const [activeSection, setActiveSection] = useState<string>("files");
-  // Track which file is active (about, contact, etc.)
-  // Use activeTab from props
-
-  // Listen for sidebar file click from parent (FileExplorer)
-  const handleSidebarFileClick = () => {
-    if (setShowThemePageProp) setShowThemePageProp(false);
-    setActiveSection("files");
-    if (setActiveTab) setActiveTab("about");
-  };
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const colors = themeColors[theme] || themeColors.light;
 
   // Activity bar actions
-  // Remove duplicate handleSettingsClick definition
   const handleExplorerClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(false);
-    setShowSidebar(true);
     setActiveSection("files");
   };
   const handleGithubClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(false);
-    setShowSidebar(false);
     setActiveSection("github");
   };
   const handleBlogClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(false);
-    setShowSidebar(false);
     setActiveSection("blog");
   };
   const handleSettingsClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(true);
-    setShowSidebar(false);
     setActiveSection("settings");
   };
 
@@ -71,65 +65,30 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThem
         <div className="text-xs" style={{ color: colors.sidebarText }}>mahfuj-ahmed-portfolio - Visual Studio Code</div>
       </div>
       {/* Main Content */}
-      <div className="flex flex-row w-full">
-        {/* Sidebar */}
-        <div style={{ width: '4rem' }}></div>
-        {/* Tab Bar - now always rendered for 'files' section */}
-        {activeSection === "files" && (
-          <div className="flex flex-1">
-            {openTabs.map(tabId => {
-              const tabMeta: Record<string, { label: string; icon: string }> = {
-                about: { label: "About.tsx", icon: "⚛️" },
-                experience: { label: "Experience.ts", icon: "💼" },
-                projects: { label: "Projects.js", icon: "🚀" },
-                skills: { label: "Skills.json", icon: "⚡" },
-                contact: { label: "Contact.tsx", icon: "📧" },
-              };
-              const meta = tabMeta[tabId];
-              const isActive = activeTab === tabId;
-              const activeStyle = isActive
-                ? {
-                    background: `${colors.tabActive}${theme === 'light' ? '' : 'CC'}`,
-                    color: colors.text,
-                    opacity: 0.95,
-                    fontWeight: 'bold',
-                    borderBottom: `2px solid ${colors.button}`,
-                  }
-                : {
-                    background: colors.tabInactive,
-                    color: colors.text,
-                    opacity: 0.8,
-                  };
-              return (
-                <div
-                  key={tabId}
-                  onClick={() => setActiveTab && setActiveTab(tabId)}
-                >
-                  
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
       <div className="flex flex-1 overflow-hidden">
         {/* Activity Bar */}
-        <nav className="w-14 border-r flex flex-col items-center py-4 gap-4 relative" style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
-          <button title="Files" className="text-lg focus:outline-none" onClick={handleExplorerClick}>📁</button>
-          <button title="GitHub" className="text-lg focus:outline-none" onClick={handleGithubClick}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <nav className={`${isMobile ? 'w-12' : 'w-14'} border-r flex flex-col items-center py-4 gap-4 relative`} style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
+          <button title="Files" className={`${isMobile ? 'text-base' : 'text-lg'} focus:outline-none`} onClick={handleExplorerClick}>📁</button>
+          <button title="GitHub" className={`${isMobile ? 'text-base' : 'text-lg'} focus:outline-none`} onClick={handleGithubClick}>
+            <svg width={isMobile ? "16" : "20"} height={isMobile ? "16" : "20"} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.36 6.84 9.71.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.17-1.1-1.48-1.1-1.48-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.65.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.38 9.38 0 012.5-.34c.85.01 1.71.12 2.5.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.58.69.48A10.01 10.01 0 0022 12.26C22 6.58 17.52 2 12 2z" fill="currentColor"/>
             </svg>
           </button>
-          <button title="Blog" className="text-lg focus:outline-none" onClick={handleBlogClick}>📝</button>
-          <button title="Settings" className="absolute bottom-4 left-1/2 -translate-x-1/2 text-lg focus:outline-none" onClick={handleSettingsClick}>⚙️</button>
+          <button title="Blog" className={`${isMobile ? 'text-base' : 'text-lg'} focus:outline-none`} onClick={handleBlogClick}>📝</button>
+          {!isMobile && (
+            <button title="Settings" className="absolute bottom-4 left-1/2 -translate-x-1/2 text-lg focus:outline-none" onClick={handleSettingsClick}>⚙️</button>
+          )}
         </nav>
-        {/* Sidebar (File Explorer) - always visible */}
-        <aside className="w-64 border-r flex flex-col py-4 gap-6" style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
-          {sidebar}
-        </aside>
+        
+        {/* Sidebar (File Explorer) - hidden on mobile */}
+        {!isMobile && sidebar && (
+          <aside className="w-64 border-r flex flex-col py-4 gap-6" style={{ background: colors.sidebar, borderRight: `1px solid ${colors.border}`, color: colors.sidebarText }}>
+            {sidebar}
+          </aside>
+        )}
+        
         {/* Editor Area */}
-        <main className="flex-1 px-4 overflow-y-auto" style={{ background: colors.background, color: colors.text }}>
+        <main className={`flex-1 ${isMobile ? 'px-2' : 'px-4'} overflow-y-auto`} style={{ background: colors.background, color: colors.text }}>
           {showThemePageProp ? (
             <Theme />
           ) : activeSection === "github" ? (
@@ -143,20 +102,40 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({ children, sidebar, showThem
         </main>
       </div>
       {/* Status Bar */}
-      <footer className="h-6 flex items-center justify-between px-4 text-xs" style={{ background: colors.button, color: colors.buttonText }}>
-        <div className="flex gap-4">
-          <span>⚛️ React TSX</span>
-          <span>🌿 main</span>
-          <span>✅ No errors</span>
-        </div>
-        <div className="flex gap-4">
-          <span>UTF-8</span>
-          <span>TypeScript JSX</span>
-          <span>Mahfuj Ahmed</span>
-        </div>
-        <button title="Settings" className="absolute bottom-1 right-4 text-lg focus:outline-none" onClick={handleSettingsClick}>⚙️</button>
+      <footer className={`h-6 flex items-center justify-between px-2 lg:px-4 text-xs`} style={{ background: colors.button, color: colors.buttonText }}>
+        {isMobile ? (
+          // Mobile: GitHub icon with main on left, TypeScript and name on right
+          <>
+            <div className="flex items-center gap-2">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.36 6.84 9.71.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.17-1.1-1.48-1.1-1.48-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.65.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.38 9.38 0 012.5-.34c.85.01 1.71.12 2.5.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.58.69.48A10.01 10.01 0 0022 12.26C22 6.58 17.52 2 12 2z" fill="currentColor"/>
+              </svg>
+              <span>main</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span>TypeScript</span>
+              <span>Mahfuj Ahmed</span>
+            </div>
+          </>
+        ) : (
+          // Desktop: Full status bar
+          <>
+            <div className="flex gap-4">
+              <span>⚛️ React TSX</span>
+              <span>🌿 main</span>
+              <span>✅ No errors</span>
+            </div>
+            <div className="flex gap-4">
+              <span>UTF-8</span>
+              <span>TypeScript JSX</span>
+              <span>Mahfuj Ahmed</span>
+            </div>
+            <button title="Settings" className="text-lg focus:outline-none" onClick={handleSettingsClick}>⚙️</button>
+          </>
+        )}
       </footer>
     </div>
-    );
-  }
-  export default VSCodeLayout;
+  );
+};
+
+export default VSCodeLayout;

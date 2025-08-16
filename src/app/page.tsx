@@ -1,6 +1,6 @@
 "use client";
 
-
+import { useState, useEffect } from "react";
 import VSCodeLayout from "../components/VSCodeLayout";
 import { useTheme } from "../components/ThemeContext";
 import { themeColors } from "../components/ThemeContext";
@@ -12,8 +12,6 @@ import Contact from "../components/Contact";
 import Theme from "../components/Theme";
 import FileExplorer from "../components/FileExplorer";
 import Home from "../components/Home";
-import { useState } from "react";
-
 
 const tabComponents: Record<string, React.ReactNode> = {
   home: <Home />,
@@ -32,18 +30,34 @@ const tabMeta = [
   { id: "projects", label: "Projects.js", icon: "🚀" },
   { id: "skills", label: "Skills.json", icon: "⚡" },
   { id: "contact", label: "Contact.tsx", icon: "📧" },
-  { id: "theme", label: "Theme.tsx", icon: "⚙️" },
 ];
 
 export default function MainPage() {
   const [showThemePage, setShowThemePage] = useState(false);
   const [openTabs, setOpenTabs] = useState<string[]>(["home"]);
   const [activeTab, setActiveTab] = useState<string>("home");
+  const [isMobile, setIsMobile] = useState(false);
   const { theme } = useTheme();
   const colors = themeColors[theme] || themeColors.light;
 
-  // Tab close logic
+  // Check for mobile/tablet screen sizes
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // For responsive: show all files as non-closeable tabs
+  const allTabs = isMobile ? tabMeta.map(tab => tab.id) : openTabs;
+  
+  // Tab close logic (only for desktop)
   const closeTab = (id: string) => {
+    if (isMobile) return; // No closing on mobile
+    
     setOpenTabs(tabs => {
       const newTabs = tabs.filter(tab => tab !== id);
       if (activeTab === id) {
@@ -53,18 +67,16 @@ export default function MainPage() {
     });
   };
 
-  // Tab meta for icons and labels
-  // (already defined above)
-
   return (
     <VSCodeLayout
-      sidebar={<FileExplorer openTabs={openTabs} setOpenTabs={setOpenTabs} activeTab={activeTab} setActiveTab={setActiveTab} />}
+      sidebar={!isMobile ? <FileExplorer openTabs={openTabs} setOpenTabs={setOpenTabs} activeTab={activeTab} setActiveTab={setActiveTab} /> : null}
       showThemePage={showThemePage}
       setShowThemePage={setShowThemePage}
+      isMobile={isMobile}
     >
-      {/* Tab Bar - top of main section, starts after sidebar */}
-      <div className="flex gap-1 border-b mb-0" style={{ borderBottom: `1px solid ${colors.border}` }}>
-        {openTabs.map(tabId => {
+      {/* Tab Bar - responsive behavior */}
+      <div className={`flex gap-1 border-b mb-0 ${isMobile ? 'overflow-x-auto scrollbar-hide' : ''}`} style={{ borderBottom: `1px solid ${colors.border}` }}>
+        {allTabs.map(tabId => {
           const meta = tabMeta.find(t => t.id === tabId);
           const isActive = activeTab === tabId;
           const activeStyle = isActive
@@ -83,23 +95,25 @@ export default function MainPage() {
           return (
             <div
               key={tabId}
-              className={`flex items-center gap-1 px-4 py-2 rounded-t text-sm font-mono transition-colors cursor-pointer relative`}
+              className={`flex items-center gap-1 px-3 py-2 rounded-t text-sm font-mono transition-colors cursor-pointer relative ${isMobile ? 'flex-shrink-0 min-w-max' : ''}`}
               style={activeStyle}
               onClick={() => setActiveTab(tabId)}
             >
               <span>{meta?.icon}</span>
-              <span>{meta?.label}</span>
-              <button
-                className="ml-2 text-xs opacity-60 hover:opacity-100 px-1"
-                onClick={e => { e.stopPropagation(); closeTab(tabId); }}
-                aria-label="Close tab"
-              >×</button>
+              <span className={isMobile ? 'text-xs' : ''}>{meta?.label}</span>
+              {!isMobile && (
+                <button
+                  className="ml-2 text-xs opacity-60 hover:opacity-100 px-1"
+                  onClick={e => { e.stopPropagation(); closeTab(tabId); }}
+                  aria-label="Close tab"
+                >×</button>
+              )}
             </div>
           );
         })}
       </div>
       {/* Editor Content - only show active tab's content */}
-      <div className="flex flex-col gap-8">
+      <div className={`flex flex-col ${isMobile ? 'gap-2 p-1' : 'gap-4 p-4'}`}>
         {tabComponents[activeTab] || <About />}
       </div>
     </VSCodeLayout>
