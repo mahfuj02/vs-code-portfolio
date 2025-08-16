@@ -4,6 +4,7 @@ import { useTheme } from "./ThemeContext";
 import { themeColors } from "./ThemeContext";
 
 const files = [
+  { id: "home", label: "home.tsx", icon: "🏠" },
   { id: "about", label: "About.tsx", icon: "⚛️" },
   { id: "experience", label: "Experience.ts", icon: "💼" },
   { id: "projects", label: "Projects.js", icon: "🚀" },

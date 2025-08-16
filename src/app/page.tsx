@@ -11,31 +11,34 @@ import Skills from "../components/Skills";
 import Contact from "../components/Contact";
 import Theme from "../components/Theme";
 import FileExplorer from "../components/FileExplorer";
+import Home from "../components/Home";
 import { useState } from "react";
 
 
 const tabComponents: Record<string, React.ReactNode> = {
+  home: <Home />,
   about: <About />,
   experience: <Experience />,
   projects: <Projects />,
   skills: <Skills />,
   contact: <Contact />,
-  theme: <Theme />, // Replacing ThemeList with Theme
+  theme: <Theme />,
 };
 
 const tabMeta = [
+  { id: "home", label: "home.tsx", icon: "🏠" },
   { id: "about", label: "About.tsx", icon: "⚛️" },
   { id: "experience", label: "Experience.ts", icon: "💼" },
   { id: "projects", label: "Projects.js", icon: "🚀" },
   { id: "skills", label: "Skills.json", icon: "⚡" },
   { id: "contact", label: "Contact.tsx", icon: "📧" },
-  { id: "theme", label: "Theme.tsx", icon: "⚙️" }, // Keeping the theme entry in tabMeta
+  { id: "theme", label: "Theme.tsx", icon: "⚙️" },
 ];
 
-export default function Home() {
+export default function MainPage() {
   const [showThemePage, setShowThemePage] = useState(false);
-  const [openTabs, setOpenTabs] = useState<string[]>(["about"]);
-  const [activeTab, setActiveTab] = useState<string>("about");
+  const [openTabs, setOpenTabs] = useState<string[]>(["home"]);
+  const [activeTab, setActiveTab] = useState<string>("home");
   const { theme } = useTheme();
   const colors = themeColors[theme] || themeColors.light;
 
@@ -51,13 +54,7 @@ export default function Home() {
   };
 
   // Tab meta for icons and labels
-  const tabMeta = [
-    { id: "about", label: "About.tsx", icon: "⚛️" },
-    { id: "experience", label: "Experience.ts", icon: "💼" },
-    { id: "projects", label: "Projects.js", icon: "🚀" },
-    { id: "skills", label: "Skills.json", icon: "⚡" },
-    { id: "contact", label: "Contact.tsx", icon: "📧" },
-  ];
+  // (already defined above)
 
   return (
     <VSCodeLayout
@@ -103,16 +100,7 @@ export default function Home() {
       </div>
       {/* Editor Content - only show active tab's content */}
       <div className="flex flex-col gap-8">
-        {(() => {
-          switch (activeTab) {
-            case "about": return <About />;
-            case "experience": return <Experience />;
-            case "projects": return <Projects />;
-            case "skills": return <Skills />;
-            case "contact": return <Contact />;
-            default: return <About />;
-          }
-        })()}
+        {tabComponents[activeTab] || <About />}
       </div>
     </VSCodeLayout>
   );
