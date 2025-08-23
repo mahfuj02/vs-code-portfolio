@@ -1,18 +1,17 @@
 "use client";
 
+import VSCodeLayout from "../../components/VSCodeLayout";
+import GithubReadme from "../../components/GithubReadme";
+import FileExplorer from "../../components/FileExplorer";
 import { useState, useEffect } from "react";
-import VSCodeLayout from "../components/VSCodeLayout";
-import FileExplorer from "../components/FileExplorer";
-import Home from "../components/Home";
 
-export default function HomePage() {
+export default function GithubPage() {
   const [showThemePage, setShowThemePage] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check for mobile/tablet screen sizes
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+      setIsMobile(window.innerWidth < 1024);
     };
     
     checkScreenSize();
@@ -27,7 +26,7 @@ export default function HomePage() {
       setShowThemePage={setShowThemePage}
       isMobile={isMobile}
     >
-      <Home />
+      <GithubReadme />
     </VSCodeLayout>
   );
 }

@@ -1,19 +1,15 @@
 "use client";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import { useTheme } from "./ThemeContext";
 import { themeColors } from "./ThemeContext";
+import { useRouter } from "next/navigation";
 import Theme from "./Theme";
-import BlogSection from "./BlogSection";
-import GithubReadme from "./GithubReadme";
 
 interface VSCodeLayoutProps {
   children: ReactNode;
   sidebar?: ReactNode;
   showThemePage?: boolean;
   setShowThemePage?: (show: boolean) => void;
-  openTabs?: string[];
-  activeTab?: string;
-  setActiveTab?: (tab: string) => void;
   isMobile?: boolean;
 }
 
@@ -25,44 +21,63 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({
   sidebar, 
   showThemePage: showThemePageProp, 
   setShowThemePage: setShowThemePageProp, 
-  openTabs = ["about"], 
-  activeTab = "about", 
-  setActiveTab,
   isMobile = false 
 }) => {
-  // activeSection: 'files', 'github', 'blog', 'settings'
-  const [activeSection, setActiveSection] = useState<string>("files");
+  const router = useRouter();
   const { theme } = useTheme();
   const colors = themeColors[theme] || themeColors.light;
 
   // Activity bar actions
   const handleExplorerClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(false);
-    setActiveSection("files");
+    router.push("/");
   };
   const handleGithubClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(false);
-    setActiveSection("github");
+    router.push("/github");
   };
   const handleBlogClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(false);
-    setActiveSection("blog");
+    router.push("/blog");
   };
   const handleSettingsClick = () => {
     if (setShowThemePageProp) setShowThemePageProp(true);
-    setActiveSection("settings");
   };
 
   return (
     <div className="min-h-screen flex flex-col font-mono" style={{ background: colors.background, color: colors.text }}>
       {/* Title Bar */}
-      <div className="flex items-center justify-between h-10 px-4 border-b" style={{ background: colors.sidebar, borderBottom: `1px solid ${colors.border}`, color: colors.sidebarText }}>
-        <div className="flex gap-2">
-          <span className="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
-          <span className="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span>
-          <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+      <div className="flex items-center h-8 px-2 border-b" style={{ background: colors.sidebar, borderBottom: `1px solid ${colors.border}`, color: colors.sidebarText }}>
+        {/* Left side - Window controls (macOS style) */}
+        
+        
+        {/* Center - Menu items */}
+        <div className="flex items-center gap-4 flex-1">
+          <div className="flex items-center gap-4 text-xs">
+            <span className="hover:bg-gray-600 px-1 py-1 rounded cursor-pointer">File</span>
+            <span className="hover:bg-gray-600 px-1 py-1 rounded cursor-pointer">Edit</span>
+            <span className="hover:bg-gray-600 px-1 py-1 rounded cursor-pointer">View</span>
+            <span className="hover:bg-gray-600 px-1 py-1 rounded cursor-pointer">Go</span>
+            <span className="hover:bg-gray-600 px-1 py-1 rounded cursor-pointer">Run</span>
+            <span className="hover:bg-gray-600 px-1 py-1 rounded cursor-pointer">Terminal</span>
+            <span className="hover:bg-gray-600 px-1 py-1 rounded cursor-pointer">Help</span>
+          </div>
         </div>
-        <div className="text-xs" style={{ color: colors.sidebarText }}>mahfuj-ahmed-portfolio - Visual Studio Code</div>
+        
+        {/* Right side - Title and search */}
+        <div className="flex items-center gap-4 flex-1">
+          <div className="text-xs font-medium">mahfuj-ahmed-portfolio </div>
+          <div className="flex items-center gap-2">
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 mr-4">
+          <div className="flex gap-2">
+            <span className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 cursor-pointer"></span>
+            <span className="w-3 h-3 rounded-full bg-yellow-400 hover:bg-yellow-500 cursor-pointer"></span>
+            <span className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 cursor-pointer"></span>
+          </div>
+        </div>
       </div>
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
@@ -91,14 +106,9 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({
         <main className={`flex-1 ${isMobile ? 'px-2' : 'px-4'} overflow-y-auto`} style={{ background: colors.background, color: colors.text }}>
           {showThemePageProp ? (
             <Theme />
-          ) : activeSection === "github" ? (
-            <GithubReadme />
-          ) : activeSection === "blog" ? (
-            <BlogSection />
-          ) : activeSection === "files" ? (
-            // Render only the active tab's content
+          ) : (
             children
-          ) : null}
+          )}
         </main>
       </div>
       {/* Status Bar */}
@@ -130,7 +140,7 @@ const VSCodeLayout: React.FC<VSCodeLayoutProps> = ({
               <span>TypeScript JSX</span>
               <span>Mahfuj Ahmed</span>
             </div>
-            <button title="Settings" className="text-lg focus:outline-none" onClick={handleSettingsClick}>⚙️</button>
+            {/* <button title="Settings" className="text-lg focus:outline-none" onClick={handleSettingsClick}>⚙️</button> */}
           </>
         )}
       </footer>

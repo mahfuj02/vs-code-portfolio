@@ -2,29 +2,24 @@ import React from "react";
 import { useTheme } from "./ThemeContext";
 import { themeColors } from "./ThemeContext";
 
-const codeSnippet = `const HomePage = () => {
-  const [isLoaded, setIsLoaded] = useState(true);
-  const developerInfo = {
-    name: 'Mahfuj Ahmed',
-    role: 'Full Stack Developer',
-    bio: 'Building modern web experiences'
+const codeSnippet = `const fakeAPI = () =>
+  Promise.resolve({ message: "Hello from the server 🚀" });
+
+export default function ApiDemo() {
+  const [msg, setMsg] = useState("...waiting");
+
+  const loadMessage = async () => {
+    const res = await fakeAPI();
+    setMsg(res.message);
   };
 
-  useEffect(() => {
-    document.title = developerInfo.name + ' | Portfolio';
-    setIsLoaded(true);
-  }, []);
-
   return (
-    <main className="hero-container">
-      <h1>{developerInfo.name}</h1>
-      <p>{developerInfo.role}</p>
-      <div className="cta">
-        <Link href="/projects">View Projects</Link>
-      </div>
-    </main>
+    <div>
+      <p>{msg}</p>
+      <button onClick={loadMessage}>Fetch</button>
+    </div>
   );
-};`;
+}`;
 
 const techs = [
   { name: "React", className: "text-blue-400", style: { top: "10%", left: "5%", opacity: 0.08, fontSize: "2rem" }, animate: "animate-pulse" },
@@ -147,7 +142,7 @@ const Home = () => {
       <div className="relative z-10 flex flex-col lg:flex-row w-full max-w-7xl mx-auto gap-2 lg:gap-8">
         {/* Left: Code Editor */}
         <div 
-          className="w-full lg:w-1/2 rounded-xl shadow-2xl p-2 lg:p-6 border"
+          className="h-150 w-full lg:w-1/2 rounded-xl shadow-2xl p-2 lg:p-6 border flex items-center justify-center lg:mt-8"
           style={{ 
             background: colors.sidebar,
             borderColor: colors.border
@@ -156,7 +151,7 @@ const Home = () => {
           
           {/* Code Snippet */}
           <div 
-            className="rounded-lg p-2 lg:p-4 overflow-x-auto"
+            className="rounded-lg p-2 lg:p-4 overflow-x-auto w-full flex items-center justify-center"
             style={{ background: colors.tabActive }}
           >
             <pre className="text-xs lg:text-sm font-mono whitespace-pre" style={{ color: colors.text }}>
